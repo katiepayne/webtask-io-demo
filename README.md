@@ -1,10 +1,11 @@
 Demo Webhook from github that sends a SMS via Twilio, or logs any encountered error to a mLab db.
 
 Steps:
+
 1. Create Accounts: GitHub, Twilio, mLab, WebTask.io
-	- Create a repo in github that will hold the webhook.
-	- Create a new DB in mLab to use as the error log data store.
-	- Create a Trial Twilio Account and Add a Trial Phone Number.
+- Create a repo in github that will hold the webhook.
+- Create a new DB in mLab to use as the error log data store.
+- Create a Trial Twilio Account and Add a Trial Phone Number.
 
 2. Download / Install the WebTask.io CLI
 3. Create a GitHub repo, and from the Repo > Settings > Webhooks ... Add a new webhook: using the URL generated using the following webtask cli command: 
