@@ -17,7 +17,7 @@ module.exports = function(context, callback) {
 	    // Store a log in mLab DB.
 	    request.post({
 	    		url: uri, 
-	    		body: JSON.stringify({key: "value"}),
+	    		body: JSON.stringify(doc),
 	    		headers: {'content-type': 'application/json'}
 	    	},
 	    	function(error, response, body) {
@@ -73,6 +73,6 @@ module.exports = function(context, callback) {
 	if( result )
 
 		// Errors are present, log them to the mLab db.
-		mLab.saveTask( JSON.stringify({context.data.ERROR_KEY: JSON.stringify(result) }) ) ) {
+		mLab.saveTask( {context.data.ERROR_KEY: JSON.stringify(result) } );
 	}
 }
