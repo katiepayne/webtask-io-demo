@@ -20,23 +20,30 @@ module.exports = function(context, callback) {
 		/**
 		* Saves a doc to the MLab DB.
 		*/
-		this.saveTask = function ( doc ) {
-	    
-	    // Store a log in mLab DB.
-	    request.post({
-	    		url: uri, 
-	    		body: JSON.stringify(doc),
-	    		headers: {'content-type': 'application/json'}
-	    	},
-	    	function(error, response, body) {
-				// Check for errors.
-				if ( error )
-					return { error: error, response: response, body: body };
+		this.saveError = function (key, value ) {
 
-				// No Errors.
-				callback(null, JSON.stringify(response));
-				return false;
-	    	});
+			// Create a new object.
+			var doc = new Object();
+
+			// Assign the property using the passed key and value.
+			doc[key] = value;
+
+			// Store a log in mLab DB.
+			request.post({
+					url: uri,
+					body: JSON.stringify(doc),
+					headers: {'content-type': 'application/json'}
+				},
+				function(error, response, body) {
+					// Check for errors.
+					if ( error )
+						return { error: error, response: response, body: body };
+
+					// No Errors.
+					callback(null, JSON.stringify(response));
+					return false;
+				}
+			);
 		}
 	}
 
@@ -85,16 +92,10 @@ module.exports = function(context, callback) {
 	var result = twilio.sendMessage(context.data.FROM_PHONE, context.data.TO_PHONE, new Date().toLocaleDateString() + ": This is a test.");
 	
 	// A successful result will be false, if truthy -- there are errors.
-	if( result )
-
-	    // Make a task object.
-        var task = {};
-
-	    // Use the error key and the current time as the key for the error entry.
-        // Stringify the result object to be used as debug info.
-        task[ context.data.ERROR_KEY + "-" + new Date().toLocaleDateString() ] = JSON.stringify(result);
+	if( result ) {
 
 		// Errors are present, log them to the mLab db.
-		mLab.saveTask( task );
+        mLab.saveError( context.data.ERROR_KEY, result );
 	}
+
 }
